@@ -13,7 +13,6 @@
             <artifactId>android-json</artifactId>
             <version>0.0.20131108.vaadin1</version>
         </dependency>
-<<<<<<< HEAD
 
         <dependency>
             <groupId>mysql</groupId>
@@ -21,8 +20,6 @@
             <version>8.0.27</version> <!-- Use the appropriate version -->
         </dependency>
 
-=======
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
     </dependencies>
 
     <properties>
