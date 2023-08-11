@@ -1,21 +1,15 @@
 package com.cryptotracker;
 
-<<<<<<< HEAD
 import java.sql.*;
 
-=======
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
-<<<<<<< HEAD
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-=======
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
 
 import com.cryptotracker.manager.CryptocurrencyManager;
 import com.cryptotracker.model.Cryptocurrency;
@@ -23,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CryptoTrackerApp {
-<<<<<<< HEAD
     // Database connection details
     private static final String DB_URL = "jdbc:mysql://localhost:3306/CryptoTrackerDB";
     private static final String DB_USER = "root";
@@ -33,8 +26,6 @@ public class CryptoTrackerApp {
     private static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
-=======
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -43,15 +34,12 @@ public class CryptoTrackerApp {
 
         System.out.println("Welcome to CryptoTrackerApp!");
 
-<<<<<<< HEAD
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         executorService.scheduleAtFixedRate(() -> updateInvestmentValues(manager), 0, 1, TimeUnit.SECONDS);
 
         // Shut down the executor service when the program exits
         Runtime.getRuntime().addShutdownHook(new Thread(executorService::shutdown));
 
-=======
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
         while (!exit) {
             System.out.println("\nMenu:");
             System.out.println("1. Add/Remove Cryptocurrency Amount (negative numbers will subtract from existsing amount)");
@@ -86,7 +74,6 @@ public class CryptoTrackerApp {
 
         System.out.println("Thank you for using CryptoTrackerApp!");
     }
-<<<<<<< HEAD
     private static void updateInvestmentValues(CryptocurrencyManager manager) {
         try (Connection connection = getConnection()) {
             // Fetch tracked cryptocurrencies from the Cryptocurrencies table
@@ -137,8 +124,6 @@ public class CryptoTrackerApp {
             return 0.0;
         }
     }
-=======
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
 
     private static void viewCryptocurrencyInfo() {
         System.out.println("\n");
@@ -146,17 +131,10 @@ public class CryptoTrackerApp {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter cryptocurrency name to view info: ");
-<<<<<<< HEAD
         String name = scanner.nextLine();
 
         // Construct the API URL
         String coinCapApiUrl = "https://api.coincap.io/v2/assets/" + name;
-=======
-        String symbol = scanner.nextLine();
-
-        // Construct the API URL
-        String coinCapApiUrl = "https://api.coincap.io/v2/assets/" + symbol;
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
 
         try {
             String apiResponse = fetchDataFromApi(coinCapApiUrl);
@@ -166,11 +144,7 @@ public class CryptoTrackerApp {
             JSONObject data = jsonObject.getJSONObject("data");
 
             // Extract relevant data
-<<<<<<< HEAD
             String symbol = data.getString("symbol");
-=======
-            String name = data.getString("name");
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
             String rank = data.getString("rank");
             String priceUsd = data.getString("priceUsd");
             String marketCapUsd = data.getString("marketCapUsd");
@@ -202,7 +176,6 @@ public class CryptoTrackerApp {
         System.out.print("Enter invested amount: ");
         double investedAmount = scanner.nextDouble();
 
-<<<<<<< HEAD
         double latestPrice = getLatestPrice(name);
 
         try (Connection connection = getConnection()) {
@@ -315,36 +288,6 @@ public class CryptoTrackerApp {
 
 
 
-=======
-        // Check if the cryptocurrency already exists in the manager
-        Cryptocurrency existingCryptocurrency = manager.getCryptocurrencyByName(name);
-
-        if (existingCryptocurrency != null) {
-            // Update the existing cryptocurrency's investment amount
-            existingCryptocurrency.setInvestedAmount(existingCryptocurrency.getInvestedAmount() + investedAmount);
-            if(existingCryptocurrency.getInvestedAmount() < 0) {
-                existingCryptocurrency.setInvestedAmount(0);
-                System.out.println("Cryptocurrency investment is set to 0 because you can't have negative crypto.");
-            } else {
-                System.out.println("Cryptocurrency investment updated: " + existingCryptocurrency.getName() +
-                        " at " + existingCryptocurrency.getInvestedAmount() + " investment");
-            }
-        } else {
-
-            String symbol = "Placeholder";
-
-            // Create a new Cryptocurrency object
-            Cryptocurrency cryptocurrency = new Cryptocurrency(symbol, name, investedAmount);
-
-            // Add the cryptocurrency to the manager
-            manager.addCryptocurrency(cryptocurrency);
-
-            System.out.println("Cryptocurrency added: " + cryptocurrency.getName() +
-                    " at " + cryptocurrency.getInvestedAmount() + " investment");
-        }
-    }
-
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
     private static void deleteCryptocurrency(CryptocurrencyManager manager) {
         System.out.println("\n");
 
@@ -353,7 +296,6 @@ public class CryptoTrackerApp {
         System.out.print("Enter cryptocurrency name to delete: ");
         String name = scanner.nextLine();
 
-<<<<<<< HEAD
         try (Connection connection = getConnection()) {
             // Delete cryptocurrency from the Cryptocurrencies table
             String deleteQuery = "DELETE FROM Cryptocurrencies WHERE Name = ?";
@@ -415,37 +357,6 @@ public class CryptoTrackerApp {
             e.printStackTrace();
         }
     }
-=======
-        // Delete the cryptocurrency from the manager based on name
-        boolean isDeleted = manager.deleteCryptocurrencyByName(name); // Use the instance to call the method
-
-        if (isDeleted) {
-            System.out.println("Cryptocurrency deleted: " + name);
-        } else {
-            System.out.println("Cryptocurrency not found in user's tracking.");
-        }
-    }
-
-
-    private static void viewTrackedCryptocurrencies(CryptocurrencyManager manager) {
-        System.out.println("\n");
-
-        List<Cryptocurrency> trackedCryptocurrencies = manager.getAllTrackedCryptocurrencies(); // Use the instance to call the method
-
-        System.out.println("Tracked Cryptocurrencies:");
-        for (Cryptocurrency cryptocurrency : trackedCryptocurrencies) {
-            String name = cryptocurrency.getName();
-            String symbol = getSymbolFromApi(name); // Get the symbol from the API based on the name
-            double investedAmount = cryptocurrency.getInvestedAmount();
-
-            System.out.println("Name: " + name);
-            System.out.println("Symbol: " + symbol);
-            System.out.println("Invested Amount: " + investedAmount);
-            System.out.println("------------------------");
-        }
-    }
-
->>>>>>> eb519fbbed1e59ecd9bd67674561484e173134aa
     private static String getSymbolFromApi(String name) {
         String coinCapApiUrl = "https://api.coincap.io/v2/assets/" + name;
 
