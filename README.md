@@ -8,4 +8,5 @@ Both investments and the current values of those real-time investments are kept 
 
 This can help investers make informed decisions.
 
-Setup alerts so users can be notified of especially high/low currencies that are based on 24 hour interval net percentage thresholds to help investors act fast.
+Next Steps:
+Setup alerts with AWS SNS so users can be notified via SMS of especially high/low currencies that are based on 24 hour interval net percentage thresholds to help investors act fast.
